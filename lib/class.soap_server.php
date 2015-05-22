@@ -283,7 +283,7 @@ class nusoap_server extends nusoap_base {
               }
 			} elseif ($this->wsdl) {
 				$this->debug("In service, serialize WSDL");
-				header("Content-Type: text/xml; charset=ISO-8859-1\r\n");
+				header("Content-Type: text/xml; charset=UTF-8\r\n");
 				print $this->wsdl->serialize($this->debug_flag);
 				if ($this->debug_flag) {
 					$this->debug('wsdl:');
@@ -292,7 +292,7 @@ class nusoap_server extends nusoap_base {
 				}
 			} else {
 				$this->debug("In service, there is no WSDL");
-				header("Content-Type: text/html; charset=ISO-8859-1\r\n");
+				header("Content-Type: text/html; charset=UTF-8\r\n");
 				print "This service does not provide WSDL";
 			}
 		} elseif ($this->wsdl) {
@@ -300,7 +300,7 @@ class nusoap_server extends nusoap_base {
 			print $this->wsdl->webDescription();
 		} else {
 			$this->debug("In service, no Web description");
-			header("Content-Type: text/html; charset=ISO-8859-1\r\n");
+			header("Content-Type: text/html; charset=UTF-8\r\n");
 			print "This service does not provide a Web description";
 		}
 	}
@@ -338,14 +338,14 @@ class nusoap_server extends nusoap_base {
 			// get the character encoding of the incoming request
 			if(isset($this->headers['content-type']) && strpos($this->headers['content-type'],'=')){
 				$enc = str_replace('"','',substr(strstr($this->headers["content-type"],'='),1));
-				if(preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)){
+				if(preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)){
 					$this->xml_encoding = strtoupper($enc);
 				} else {
 					$this->xml_encoding = 'US-ASCII';
 				}
 			} else {
-				// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-				$this->xml_encoding = 'ISO-8859-1';
+				// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+				$this->xml_encoding = 'UTF-8';
 			}
 		} elseif(isset($_SERVER) && is_array($_SERVER)){
 			$this->debug("In parse_http_headers, use _SERVER");
@@ -367,14 +367,14 @@ class nusoap_server extends nusoap_base {
 						$enc = substr(strstr($v, '='), 1);
 						$enc = str_replace('"', '', $enc);
 						$enc = str_replace('\\', '', $enc);
-						if (preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)) {
+						if (preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)) {
 							$this->xml_encoding = strtoupper($enc);
 						} else {
 							$this->xml_encoding = 'US-ASCII';
 						}
 					} else {
-						// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-						$this->xml_encoding = 'ISO-8859-1';
+						// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+						$this->xml_encoding = 'UTF-8';
 					}
 				}
 				$this->headers[$k] = $v;
@@ -401,14 +401,14 @@ class nusoap_server extends nusoap_base {
 						$enc = substr(strstr($v, '='), 1);
 						$enc = str_replace('"', '', $enc);
 						$enc = str_replace('\\', '', $enc);
-						if (preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)) {
+						if (preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)) {
 							$this->xml_encoding = strtoupper($enc);
 						} else {
 							$this->xml_encoding = 'US-ASCII';
 						}
 					} else {
-						// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-						$this->xml_encoding = 'ISO-8859-1';
+						// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+						$this->xml_encoding = 'UTF-8';
 					}
 				}
 				$this->headers[$k] = $v;
@@ -859,14 +859,14 @@ class nusoap_server extends nusoap_base {
 		if (strpos($headers['content-type'], '=')) {
 			$enc = str_replace('"', '', substr(strstr($headers["content-type"], '='), 1));
 			$this->debug('Got response encoding: ' . $enc);
-			if(preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)){
+			if(preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)){
 				$this->xml_encoding = strtoupper($enc);
 			} else {
 				$this->xml_encoding = 'US-ASCII';
 			}
 		} else {
-			// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-			$this->xml_encoding = 'ISO-8859-1';
+			// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+			$this->xml_encoding = 'UTF-8';
 		}
 		$this->debug('Use encoding: ' . $this->xml_encoding . ' when creating nusoap_parser');
 		// parse response, get soap parser obj
